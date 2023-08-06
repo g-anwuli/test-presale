@@ -12,7 +12,6 @@ import {
   approve,
   buyToken,
   getPresaleAllocation,
-  getPresalePrice,
   getPresaleState,
   getTotalSupply,
 } from "./utils/spunkyContractCall";
@@ -45,6 +44,8 @@ const chainsReverse = {
 
 type CHAINSLABEL = keyof typeof chains;
 
+const PRICE = 0.00001;
+
 const App = () => {
   const { isLoading } = useConnect();
   const { isConnected, address } = useAccount();
@@ -73,7 +74,6 @@ const App = () => {
   const bal = async () => {
     try {
       const res1 = await getPresaleAllocation(signer);
-      const res2 = await getPresalePrice(signer);
       const res3 = await getPresaleState(signer);
       const res4 = await getTotalSupply(signer);
       const total = parseInt(res4 || "0") * 0.2;
@@ -81,7 +81,6 @@ const App = () => {
       return {
         total: total,
         balance: balance,
-        price: parseInt(res2 || "0"),
         isPresale: res3,
         per: Math.round((total - balance) / total) * 100,
       };
@@ -194,7 +193,7 @@ const App = () => {
               <div className="font-normal mb-2 text-[16px] sm:text-[17px]">
                 Amount of SSDX
               </div>
-              <div>0</div>
+              <div>{Math.round(parseFloat(amount) / PRICE)||0}</div>
             </div>
             <CustomSelect
               data={chaindata}

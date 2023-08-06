@@ -65,16 +65,6 @@ export const getPresaleAllocation = async (
   return result;
 };
 
-export const getPresalePrice = async (
-  signer?: ethers.providers.JsonRpcSigner
-) => {
-  if (!signer) return;
-  const transaction = await contract(signer).getPresalePrice();
-  const data = await transaction;
-  const result = ethers.utils.formatUnits(data, 18);
-  return result;
-};
-
 export const getTotalSupply = async (
   signer?: ethers.providers.JsonRpcSigner
 ) => {
