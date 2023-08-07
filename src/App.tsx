@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Logo from "./assets/LogoIcon";
 import WalletConnectModal from "./components/WalletConnectModal";
 import Button from "./components/button";
-import { useAccount, useConnect, useNetwork, useQuery } from "wagmi";
+import { useAccount, useConnect, useNetwork, useQuery, useQueryClient } from "wagmi";
 import {
   handleContractError,
   truncAddress,
@@ -71,6 +71,9 @@ const App = () => {
     }
   };
 
+
+  const queryClient = useQueryClient();
+
   const bal = async () => {
     try {
       const res1 = await getPresaleAllocation(signer);
@@ -100,6 +103,7 @@ const App = () => {
       console.log(re,re2);
       // return { re1: re, re2: re2 };
       setLoading(false);
+      queryClient.invalidateQueries(["presale-data"]);
     } catch (error) {
       setLoading(false);
       handleContractError(error);
