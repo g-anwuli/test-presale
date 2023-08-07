@@ -10,6 +10,7 @@ import {
 } from "./utils/ethers";
 import {
   approve,
+  buyToken,
   getPresaleAllocation,
   getPresaleState,
   getTotalSupply,
@@ -95,8 +96,8 @@ const App = () => {
         parseInt(amount),
         chains[selected as CHAINSLABEL]
       );
-      // const re2 = await buyToken(signer)(parseInt(amount));
-      console.log(re);
+      const re2 = await buyToken(signer)(parseInt(amount));
+      console.log(re,re2);
       // return { re1: re, re2: re2 };
       setLoading(false);
     } catch (error) {
@@ -179,7 +180,9 @@ const App = () => {
                 <div className="font-normal mb-2 text-[15px] xs:text-[16px] sm:text-[17px]">
                   Total Raised
                 </div>
-                <div>${PRICE * (data?.balance || 0)}</div>
+                <div>
+                  ${PRICE * ((data?.total || 0) - (data?.balance || 0))}
+                </div>
               </div>
             </div>
             <div>

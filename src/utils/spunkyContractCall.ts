@@ -22,7 +22,7 @@ const abiMap = {
 
 const contract = (signer?: ethers.providers.JsonRpcSigner) =>
   new ethers.Contract(
-    "0xe9d2120341c8470e2c13dB36D969Cd34213A613A",
+    "0xE368a55e9F9D14aD7746bb0193FA0efB6f47eD29",
     SPUNKYABI,
     signer
   );
@@ -46,9 +46,10 @@ export const buyToken =
     // Convert the provided USDT amount to Wei (or smallest unit of your token)
     const amountInWei = ethers.utils.parseUnits(amount.toString(), 18);
 
-    const tx = await contract(signer).buyTokens(amountInWei, {
-      gasLimit: 9000000,
-    });
+    // const gasLimit = await contract(signer).estimateGas.buyTokens(amountInWei);
+
+    const tx = await contract(signer).buyTokens(amountInWei);
+
     return await tx.wait();
   };
 
