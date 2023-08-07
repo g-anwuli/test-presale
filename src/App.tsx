@@ -81,7 +81,7 @@ const App = () => {
         total: total,
         balance: balance,
         isPresale: res3,
-        per: Math.round((total - balance) / total) * 100,
+        per: Math.round((total - balance) / total) * 100 || 0,
       };
     } catch (error) {
       // handleContractError(error);
@@ -162,7 +162,7 @@ const App = () => {
               </div>
             </div>
             <div className="text-zinc-700 dark:text-white text-[16px] xs:text-[18px] sm:text-[20px] font-medium text-center mt-3">
-              Progress: {data?.per || 0}%
+              Progress: {data?.per}%
             </div>
             <div className="h-[30px] xs:h-[37px] w-full rounded-[50px] bg-[#D9D9D9] mt-6 overflow-hidden">
               <div
