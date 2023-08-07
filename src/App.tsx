@@ -179,13 +179,7 @@ const App = () => {
                 <div className="font-normal mb-2 text-[15px] xs:text-[16px] sm:text-[17px]">
                   Total Raised
                 </div>
-                <div>$1,780,039</div>
-              </div>
-              <div>
-                <div className="font-normal mb-2 text-[15px] xs:text-[16px] sm:text-[17px]">
-                  Sold
-                </div>
-                <div>$1,780,039</div>
+                <div>${PRICE * (data?.balance || 0)}</div>
               </div>
             </div>
             <div>
