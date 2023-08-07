@@ -36,10 +36,7 @@ export const approve =
     const amountInWei = ethers.utils.parseUnits(tokenAmount.toString(), 18);
     const tx = await usdtContract(chain, signer).approve(
       usdtMap[chain],
-      amountInWei,
-      {
-        gasLimit: 9000000,
-      }
+      amountInWei
     );
     return await tx.wait();
   };

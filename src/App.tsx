@@ -10,7 +10,6 @@ import {
 } from "./utils/ethers";
 import {
   approve,
-  buyToken,
   getPresaleAllocation,
   getPresaleState,
   getTotalSupply,
@@ -22,14 +21,14 @@ import ProgressIcon from "./assets/ProgressIcon";
 import { Toaster } from "react-hot-toast";
 
 const chaindata = [
-  "Binance Coin (BNB)",
+  "BSC Chain (BSC)",
   "Ethereum (ETH)",
   "Arbitrum (ARB)",
   "Sepolia",
 ];
 
 const chains = {
-  "Binance Coin (BNB)": 56,
+  "BSC Chain (BSC)": 56,
   "Arbitrum (ARB)": 42161,
   "Ethereum (ETH)": 1,
   Sepolia: 11155111,
@@ -37,7 +36,7 @@ const chains = {
 
 const chainsReverse = {
   1: "Ethereum (ETH)",
-  56: "Binance Coin (BNB)",
+  56: "BSC Chain (BSC)",
   42161: "Arbitrum (ARB)",
   11155111: "Sepolia",
 } as Record<number, string>;
@@ -85,7 +84,7 @@ const App = () => {
         per: Math.round((total - balance) / total) * 100,
       };
     } catch (error) {
-      handleContractError(error);
+      // handleContractError(error);
     }
   };
 
@@ -96,8 +95,8 @@ const App = () => {
         parseInt(amount),
         chains[selected as CHAINSLABEL]
       );
-      const re2 = await buyToken(signer)(parseInt(amount));
-      console.log(re, re2);
+      // const re2 = await buyToken(signer)(parseInt(amount));
+      console.log(re);
       // return { re1: re, re2: re2 };
       setLoading(false);
     } catch (error) {
@@ -147,7 +146,7 @@ const App = () => {
             monitor stolen asset on the EVM chain.
           </div>
           <Button>
-            <a href="https://sppunky.netlify.app">Get Started</a>
+            <a href="https://dapp.spunkysdx.com">Get Started</a>
           </Button>
         </div>
         <div className="relative my-[20px] lg:my-0 mx-auto lg:ml-auto max-w-[623px] w-full">
@@ -163,7 +162,7 @@ const App = () => {
               </div>
             </div>
             <div className="text-zinc-700 dark:text-white text-[16px] xs:text-[18px] sm:text-[20px] font-medium text-center mt-3">
-              Progress: {data?.per}%
+              Progress: {data?.per || 0}%
             </div>
             <div className="h-[30px] xs:h-[37px] w-full rounded-[50px] bg-[#D9D9D9] mt-6 overflow-hidden">
               <div
@@ -193,7 +192,7 @@ const App = () => {
               <div className="font-normal mb-2 text-[16px] sm:text-[17px]">
                 Amount of SSDX
               </div>
-              <div>{Math.round(parseFloat(amount) / PRICE)||0}</div>
+              <div>{Math.round(parseFloat(amount) / PRICE) || 0}</div>
             </div>
             <CustomSelect
               data={chaindata}
