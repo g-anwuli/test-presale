@@ -11,7 +11,8 @@ export default {
         inter: "Inter"
       },
       colors: {
-        primary: "#F20BB3"
+        primary: "#F20BB3",
+        bg_purple: "#3E3D55",
       },
       screens: {
         'xs': '400px',
