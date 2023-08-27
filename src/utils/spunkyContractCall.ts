@@ -5,7 +5,7 @@ export const provider = new ethers.providers.JsonRpcProvider(
   "https://sepolia.infura.io/v3/063a60c10ac741779bd263e121f5148f"
 );
 
-const CONTRACT_ADDRESS = "0x84cAA61a7199E807A54Ca82D014de8EBDc355b46";
+const CONTRACT_ADDRESS = "0x0AE04f70b2Fab115b51d7Ea74f484B9cf301Ba13";
 
 export const contract = new ethers.Contract(
   CONTRACT_ADDRESS,

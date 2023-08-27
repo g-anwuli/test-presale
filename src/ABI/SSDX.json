@@ -211,7 +211,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "VestingScheduleAdded",
+        "name": "VestedDuration",
         "type": "uint256"
       }
     ],
@@ -448,12 +448,38 @@
   },
   {
     "inputs": [],
+    "name": "getCanRedeem",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getETHPrice",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getHasRedeemed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
