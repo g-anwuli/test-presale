@@ -83,12 +83,12 @@ const App = () => {
           <Logo />
         </div>
       </div>
-      <div className="grid lg:grid-cols-2 gap-14 xl:gap-20 items-center w-full px-[4%] py-[50px] lg:py-[100px]  text-zinc-900 dark:text-white">
+      <div className="lg:grid lg:grid-cols-2 gap-14 xl:gap-20 items-center w-full px-[4%] py-[50px] lg:py-[100px]  text-zinc-900 dark:text-white">
         <div>
-          <div className="text-zinc-800 dark:text-white text-[40px] sm:text-[50px] xl:text-[70px] font-bold leading-[1.4]">
+          <div className="text-zinc-800 dark:text-white text-[36px] xs:text-[40px] sm:text-[50px] xl:text-[70px] font-bold leading-[1.4]">
             SpunkySDX is a Revolutionary asset tracking platform
           </div>
-          <div className="text-neutral-700 dark:text-white text-[18px] xs:text-[20px]  sm:text-[24px] font-normal leading-[35px] tracking-tight my-10">
+          <div className="text-neutral-700 dark:text-white text-[16px] xs:text-[20px]  sm:text-[24px] font-normal leading-[35px] tracking-tight my-10">
             SpunkySDX leverages advanced AI technology to actively track and
             monitor stolen asset on the EVM chain.
           </div>
@@ -96,7 +96,7 @@ const App = () => {
             <a href="https://dapp.spunkysdx.com">Get Started</a>
           </Button>
         </div>
-        <div className="relative my-[20px] lg:my-0 mx-auto lg:ml-auto max-w-[530px] w-full">
+        <div className="relative my-10 lg:my-0 mx-auto lg:ml-auto max-w-[530px] w-full">
           <div className="h-full w-full rounded-3xl xs:rounded-[40px] box-gradient relative z-[1] py-6 sm:py-8 px-[5%]">
             <div className="justify-center items-center xs:gap-2 xl:gap-[25px] flex font-bold text-[20px] xs:text-[23px] sm:text-[28px]">
               <div className="">PRE-SALE</div>
