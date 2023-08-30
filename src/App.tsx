@@ -10,7 +10,7 @@ import {
 import ToggleMode from "./components/ToogleMode";
 import ProgressIcon from "./assets/ProgressIcon";
 import { Toaster } from "react-hot-toast";
-import Button from "./components/button";
+// import Button from "./components/button";
 import CopyContainer from "./components/CopyContainer";
 import { ethers } from "ethers";
 
@@ -92,9 +92,9 @@ const App = () => {
             SpunkySDX leverages advanced AI technology to actively track and
             monitor stolen asset on the EVM chain.
           </div>
-          <Button>
+          {/* <Button>
             <a href="https://dapp.spunkysdx.com">Get Started</a>
-          </Button>
+          </Button> */}
         </div>
         <div className="relative my-10 lg:my-0 mx-auto lg:ml-auto max-w-[530px] w-full">
           <div className="h-full w-full rounded-3xl xs:rounded-[40px] box-gradient relative z-[1] py-6 sm:py-8 px-[5%]">
