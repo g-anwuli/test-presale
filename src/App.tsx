@@ -31,6 +31,8 @@ const App = () => {
   const cachwMode = JSON.parse(
     localStorage.getItem("mode") || JSON.stringify(false)
   );
+  const cacheChain = localStorage.getItem("chain") || "11155111";
+
   const [mode, setMode] = useState(cachwMode as boolean);
   const [data, setData] = useState({
     isPresale: true,
@@ -38,9 +40,10 @@ const App = () => {
     eth: 0,
     total: 0,
   });
-  const [chain, setChain] = useState("11155111");
+  const [chain, setChain] = useState(cacheChain);
 
   const changeChain = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    localStorage.setItem("chain", e.target.value);
     setChain(e.target.value);
   };
 
@@ -186,9 +189,9 @@ const App = () => {
               onChange={changeChain}
             >
               <option value="11155111">Sepolia</option>
-              <option value="1">Ethereum</option>
+              {/* <option value="1">Ethereum</option>
               <option value="42161">Arbitrum</option>
-              <option value="56">Binance Smart Chain</option>
+              <option value="56">Binance Smart Chain</option> */}
             </select>
 
             <div className="mt-8 mb-10 xs:mb-12 flex justify-between text-[18px] xs:text-[20px] sm:text-[24px] font-bold">
