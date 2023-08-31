@@ -23,8 +23,14 @@ const linkMap = {
 const guideMap = {
   "1": "Buy ETH and send ETH to your wallet",
   "56": "Buy BNB and send BNB to your wallet",
-  "42161": "Buy ARB or send ARB to your wallet",
+  "42161": "Buy ARB and send ARB to your wallet",
   "11155111": "Head to Sepolia Faucet and get Sepolia eth",
+} as Record<string, string>;
+
+const chainNameMap = {
+  "56": "Binance Smart Chain",
+  "42161": "Arbitrium Chain",
+  "11155111": "Sepolia testnet",
 } as Record<string, string>;
 
 const App = () => {
@@ -33,6 +39,7 @@ const App = () => {
   );
   const cacheChain = localStorage.getItem("chain") || "11155111";
 
+  const [chain, setChain] = useState(cacheChain);
   const [mode, setMode] = useState(cachwMode as boolean);
   const [data, setData] = useState({
     isPresale: true,
@@ -40,7 +47,6 @@ const App = () => {
     eth: 0,
     total: 0,
   });
-  const [chain, setChain] = useState(cacheChain);
 
   const changeChain = (e: React.ChangeEvent<HTMLSelectElement>) => {
     localStorage.setItem("chain", e.target.value);
@@ -85,13 +91,20 @@ const App = () => {
       setData((data) => ({ ...data, balance: updatedAllocation }));
       await bal();
     });
+
+    return () => {
+      contract(chain).off("BuyTokens", () => {
+        console.log(`BuyToken${chain} listener is off`);
+      });
+    };
+    
   }, [chain]);
 
   const per = Math.round(
     ((data.total - data.balance) / (data.total || 1)) * 100
   );
   const usdtRaised = Math.round(data.eth * (data.total - data.balance));
-
+  
   return (
     <div
       className={`w-screen min-h-screen h-max pb-24 font-inter transition-colors ${
@@ -114,7 +127,7 @@ const App = () => {
               <div>{guideMap[chain]}</div>
               {chain !== "1" && (
                 <div>
-                  Add Sepolia testnet to MetaMask{" "}
+                  Add {chainNameMap[chain]} to MetaMask{" "}
                   <a
                     className="text-fuchsia-600 dark:text-fuchsia-300 bg-neutral-700 py-1 px-1.5 rounded text-[0.7em] font-medium whitespace-nowrap"
                     href={linkMap[chain]}
@@ -189,9 +202,9 @@ const App = () => {
               onChange={changeChain}
             >
               <option value="11155111">Sepolia</option>
-              {/* <option value="1">Ethereum</option>
+              <option value="1">Ethereum</option>
               <option value="42161">Arbitrum</option>
-              <option value="56">Binance Smart Chain</option> */}
+              <option value="56">Binance Smart Chain</option>
             </select>
 
             <div className="mt-8 mb-10 xs:mb-12 flex justify-between text-[18px] xs:text-[20px] sm:text-[24px] font-bold">
