@@ -97,14 +97,14 @@ const App = () => {
         console.log(`BuyToken${chain} listener is off`);
       });
     };
-    
   }, [chain]);
 
   const per = Math.round(
     ((data.total - data.balance) / (data.total || 1)) * 100
   );
-  const usdtRaised = Math.round(data.eth * (data.total - data.balance));
   
+  const usdtRaised = (data.eth * (data.total - data.balance)).toFixed(3);
+
   return (
     <div
       className={`w-screen min-h-screen h-max pb-24 font-inter transition-colors ${
