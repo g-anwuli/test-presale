@@ -225,7 +225,7 @@ const App = () => {
               <div className="text-[20px] sm:text-[22px] font-medium mb-2 flex items-center gap-4">
                 Contract Address{" "}
                 <div className=" scale-105 sm:scale-110">
-                  <CopyContainer text="0xFE68Dc4F68112cB08983ec6E041bBf6370F3F39b" />
+                  <CopyContainer text={contractMap[chain]} />
                 </div>
               </div>
             )}
