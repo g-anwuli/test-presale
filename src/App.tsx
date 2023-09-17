@@ -36,7 +36,7 @@ const chainNameMap = {
 
 const App = () => {
   const [chain, setChain] = useState(() => {
-    return localStorage.getItem("chain") || "1";
+    return localStorage.getItem("chain") || "56";
   });
 
   const [mode, setMode] = useState(() => {
@@ -86,21 +86,30 @@ const App = () => {
     };
 
     ar();
-    contract(chain).on("BuyTokens", async (tokensToBuy: ethers.BigNumber) => {
-      // This will be called whenever the BuyTokens event is emitted
-      const updatedAllocation = Number(
-        ethers.utils.formatUnits(tokensToBuy, 18)
-      );
-      console.log("Tokens bought:", updatedAllocation);
-      setData((data) => ({ ...data, balance: updatedAllocation }));
-      await bal();
-    });
+    try {
+      contract(chain).on("BuyTokens", async (tokensToBuy: ethers.BigNumber) => {
+        // This will be called whenever the BuyTokens event is emitted
+        const updatedAllocation = Number(
+          ethers.utils.formatUnits(tokensToBuy, 18)
+        );
+        console.log("Tokens bought:", updatedAllocation);
+        setData((data) => ({ ...data, balance: updatedAllocation }));
+        await ar();
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     return () => {
-      contract(chain).off("BuyTokens", () => {
-        console.log(`BuyToken${chain} listener is off`);
-      });
+      try {
+        contract(chain).off("BuyTokens", () => {
+          console.log(`BuyToken${chain} listener is off`);
+        });
+      } catch (error) {
+        console.log(error);
+      }
     };
+
   }, [chain]);
 
   const per = Math.round(
@@ -199,7 +208,7 @@ const App = () => {
               <div
                 className="relative h-full rounded-[50px] bg-primary transition-all ease-in-out duration-300"
                 style={{
-                  width: per > 100 ? "100%" : `${per}%`,
+                  width: per <= 0 ? "0%" : per > 100 ? "100%" : `${per}%`,
                 }}
               >
                 <ProgressIcon className="transition-all rocket" />
@@ -211,8 +220,8 @@ const App = () => {
               onChange={changeChain}
             >
               <option value="1">Ethereum Chain</option>
-              <option value="42161">Arbitrum Chain</option>
               <option value="56">Binance Smart Chain</option>
+              <option value="42161">Arbitrum Chain</option>
               <option value="11155111">Sepolia</option>
             </select>
 
