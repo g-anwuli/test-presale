@@ -23,7 +23,7 @@ const linkMap = {
 const guideMap = {
   "1": "Buy ETH and send ETH to your wallet",
   "56": "Buy BNB and send BNB to your wallet",
-  "42161": "Buy ARB and send ARB to your wallet",
+  "42161": "Buy arbETH and send arbETH to your wallet",
   "11155111": "Head to Sepolia Faucet and get Sepolia eth",
 } as Record<string, string>;
 
