@@ -6,13 +6,12 @@ export const provider = new ethers.providers.JsonRpcProvider(
 );
 
 export const contractMap = {
-  "1": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-  "56": "0x55d398326f99059fF775485246999027B3197955",
-  "42161": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
-  "11155111": "0x118E057f72BEA13b6bEFB22525478d3AeA644D49",
+  "1": "0x73F5E354d0570475D0559C9E66de8d22c3f793a9",
+  "56": "0x532a437c55b8db5D08ecA1d0C762fE6a2f414F5C",
+  "42161": "0x73F5E354d0570475D0559C9E66de8d22c3f793a9",
+  "11155111": "0xfac95691a6153Fe405D0E01B2329AB34693ef1bF",
 } as Record<string, string>;
 
-// const CONTRACT_ADDRESS = "0x0AE04f70b2Fab115b51d7Ea74f484B9cf301Ba13";
 
 export const contract = (chain = "11155111") =>
   new ethers.Contract(contractMap[chain], SPUNKYABI, provider);

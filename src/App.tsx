@@ -28,19 +28,23 @@ const guideMap = {
 } as Record<string, string>;
 
 const chainNameMap = {
+  "1": "Ethereum Mainnet",
   "56": "Binance Smart Chain",
   "42161": "Arbitrium Chain",
   "11155111": "Sepolia testnet",
 } as Record<string, string>;
 
 const App = () => {
-  const cachwMode = JSON.parse(
-    localStorage.getItem("mode") || JSON.stringify(false)
-  );
-  const cacheChain = localStorage.getItem("chain") || "11155111";
+  const [chain, setChain] = useState(() => {
+    return localStorage.getItem("chain") || "1";
+  });
 
-  const [chain, setChain] = useState(cacheChain);
-  const [mode, setMode] = useState(cachwMode as boolean);
+  const [mode, setMode] = useState(() => {
+    return JSON.parse(
+      localStorage.getItem("mode") || JSON.stringify(false)
+    ) as boolean;
+  });
+
   const [data, setData] = useState({
     isPresale: true,
     balance: 0,
@@ -206,10 +210,10 @@ const App = () => {
               value={chain}
               onChange={changeChain}
             >
-              <option value="11155111">Sepolia</option>
-              <option value="1">Ethereum</option>
-              <option value="42161">Arbitrum</option>
+              <option value="1">Ethereum Chain</option>
+              <option value="42161">Arbitrum Chain</option>
               <option value="56">Binance Smart Chain</option>
+              <option value="11155111">Sepolia</option>
             </select>
 
             <div className="mt-8 mb-10 xs:mb-12 flex justify-between text-[18px] xs:text-[20px] sm:text-[24px] font-bold">
