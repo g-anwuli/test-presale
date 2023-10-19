@@ -13,38 +13,37 @@ export const contractMap = {
   "1": "0x73F5E354d0570475D0559C9E66de8d22c3f793a9",
   "56": "0x532a437c55b8db5D08ecA1d0C762fE6a2f414F5C",
   "42161": "0x73F5E354d0570475D0559C9E66de8d22c3f793a9",
-  "11155111": "0xfac95691a6153Fe405D0E01B2329AB34693ef1bF",
+  "11155111": "0xc74303DE35Fabec349aaFdc7346ca2d2f1ab4726",
 } as Record<string, string>;
 
-export const contract = (chain = "56") => {
+export const contract = (chain = "11155111") => {
   const provider = new ethers.providers.JsonRpcProvider(providerMap[chain]);
   return new ethers.Contract(contractMap[chain], SPUNKYABI, provider);
 };
 
-// console.log(contract);
+// console.log(await contract().presaleStarted());
 
-export const getPresaleAllocation = async (chain: string) => {
-  const transaction = await contract(chain).getPresaleAllocation();
-  const data = await transaction;
+
+export const getTokenSold = async (chain: string) => {
+  const data = await contract(chain).tokensSold();
   const result = ethers.utils.formatUnits(data, 18);
+  console.log(result);
+  
   return result;
 };
 
-export const getTotalSupply = async (chain: string) => {
-  const transaction = await contract(chain).getSupply();
-  const data = await transaction;
-  const result = ethers.utils.formatUnits(data, 18);
-  return result;
+export const getHasPresaleEnded = async (chain: string) => {
+  return await contract(chain).presaleEnded();
 };
 
-export const getPresaleState = async (chain: string) => {
-  const transaction = await contract(chain).getPresaleState();
-  return transaction;
+export const getHasPresaleStarted = async (chain: string) => {
+  return await contract(chain).presaleStarted();
 };
 
 export const getEthPrice = async (chain: string) => {
   const transaction = await contract(chain).getETHPrice();
   const data = await transaction;
   const result = ethers.utils.formatUnits(data, 18);
+  console.log(result);
   return result;
 };

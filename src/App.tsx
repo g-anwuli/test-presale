@@ -4,12 +4,12 @@ import {
   contract,
   contractMap,
   getEthPrice,
-  getPresaleAllocation,
-  getPresaleState,
-  getTotalSupply,
+  getHasPresaleEnded,
+  getHasPresaleStarted,
+  getTokenSold,
 } from "./utils/spunkyContractCall";
 import ToggleMode from "./components/ToogleMode";
-import ProgressIcon from "./assets/ProgressIcon";
+// import ProgressIcon from "./assets/ProgressIcon";
 import { Toaster } from "react-hot-toast";
 import CopyContainer from "./components/CopyContainer";
 import { ethers } from "ethers";
@@ -36,7 +36,7 @@ const chainNameMap = {
 
 const App = () => {
   const [chain, setChain] = useState(() => {
-    return localStorage.getItem("chain") || "56";
+    return localStorage.getItem("chain") || "11155111";
   });
 
   const [mode, setMode] = useState(() => {
@@ -46,10 +46,10 @@ const App = () => {
   });
 
   const [data, setData] = useState({
-    isPresale: true,
-    balance: 0,
+    hasEnded: false,
+    hasStarted: false,
     eth: 0,
-    total: 0,
+    tokenSold: 0,
   });
 
   const changeChain = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -59,21 +59,20 @@ const App = () => {
 
   useEffect(() => {
     const bal = async () => {
-      const res1 = await getPresaleAllocation(chain);
-      const res2 = await getPresaleState(chain);
-      const res3 = await getTotalSupply(chain);
+      const hasEnded = await getHasPresaleEnded(chain);
+      const hasStarted = await getHasPresaleStarted(chain);
+      const tokens = await getTokenSold(chain);
       const res4 = await getEthPrice(chain);
-      const total = parseInt(res3 || "0") * 0.2;
-      const balance = parseInt(res1 || "0");
+      const tokenSold = parseInt(tokens || "0");
       const eth = parseFloat(res4 || "0");
 
       const data = {
-        isPresale: res2,
-        balance,
+        hasEnded,
+        hasStarted,
+        tokenSold,
         eth,
-        total,
       };
-
+      console.log(data);
       setData(data);
     };
 
@@ -87,41 +86,43 @@ const App = () => {
 
     ar();
     try {
-      contract(chain).on("BuyTokens", async (tokensToBuy: ethers.BigNumber) => {
-        // This will be called whenever the BuyTokens event is emitted
-        const updatedAllocation = Number(
-          ethers.utils.formatUnits(tokensToBuy, 18)
-        );
-        console.log("Tokens bought:", updatedAllocation);
-        setData((data) => ({ ...data, balance: updatedAllocation }));
-        await ar();
-      });
+      contract(chain).on(
+        "TokensPurchased",
+        async (tokensToBuy: ethers.BigNumber) => {
+          // This will be called whenever the BuyTokens event is emitted
+          const updatedAllocation = Number(
+            ethers.utils.formatUnits(tokensToBuy, 18)
+          );
+          console.log("Tokens bought:", updatedAllocation);
+          setData((data) => ({ ...data, balance: updatedAllocation }));
+          await ar();
+        }
+      );
     } catch (error) {
       console.log(error);
     }
 
     return () => {
       try {
-        contract(chain).off("BuyTokens", () => {
+        contract(chain).off("TokensPurchased", () => {
           console.log(`BuyToken${chain} listener is off`);
         });
       } catch (error) {
         console.log(error);
       }
     };
-
   }, [chain]);
 
-  const per = Math.round(
-    ((data.total - data.balance) / (data.total || 1)) * 100
-  );
+  // const per = Math.round(
+  //   ((data.total - data.balance) / (data.total || 1)) * 100
+  // );
 
-  const per2 = (
-    ((data.total - data.balance) / (data.total || 1)) *
-    100
-  ).toFixed(2);
+  // const per2 = (
+  //   ((data.total - data.balance) / (data.total || 1)) *
+  //   100
+  // ).toFixed(2);
 
-  const usdtRaised = (data.eth * (data.total - data.balance)).toFixed(3);
+  const usdtRaised = Math.round(data.eth * data.tokenSold);
 
   return (
     <div
@@ -185,7 +186,7 @@ const App = () => {
             <a href="https://dapp.spunkysdx.com">Get Started</a>
           </Button> */}
         </div>
-        <div className="relative my-10 lg:my-0 mx-auto lg:ml-auto max-w-[530px] w-full">
+        <div className="relative my-10 lg:my-0 mx-auto lg:ml-auto max-w-[500px] w-full">
           <div className="h-full w-full rounded-3xl xs:rounded-[40px] box-gradient relative z-[1] py-6 sm:py-8 px-[5%] text-zinc-900 dark:text-neutral-100">
             <div className="justify-center items-center xs:gap-2 xl:gap-[25px] flex font-bold text-[20px] xs:text-[23px] sm:text-[28px]">
               <div className="">PRE-SALE</div>
@@ -197,7 +198,7 @@ const App = () => {
                 <span className="">SDX</span>
               </div>
             </div>
-            <div className="text-zinc-700 dark:text-white text-[16px] xs:text-[18px] sm:text-[20px] font-medium text-center mt-3">
+            {/* <div className="text-zinc-700 dark:text-white text-[16px] xs:text-[18px] sm:text-[20px] font-medium text-center mt-3">
               Progress: {per2}%
             </div>
             <div
@@ -213,7 +214,7 @@ const App = () => {
               >
                 <ProgressIcon className="transition-all rocket" />
               </div>
-            </div>
+            </div> */}
             <select
               className="outline-none w-full h-[30px] xs:h-[37px] bg-transparent rounded-[50px] border-primary border px-4 mt-6 xs:mt-8"
               value={chain}
@@ -230,11 +231,11 @@ const App = () => {
                 <div className="font-normal mb-2 text-[15px] xs:text-[16px] sm:text-[17px]">
                   Total Raised
                 </div>
-                <div>${usdtRaised}</div>
+                <div>${usdtRaised?.toLocaleString()}</div>
               </div>
             </div>
 
-            {data.isPresale && (
+            {data.hasStarted && (
               <div className="text-[20px] sm:text-[22px] font-medium mb-2 flex items-center gap-4">
                 Contract Address{" "}
                 <div className=" scale-105 sm:scale-110">
@@ -247,7 +248,7 @@ const App = () => {
                 mode ? "bg-bg_purple/40" : "bg-bg_purple/10"
               }`}
             >
-              {data.isPresale ? contractMap[chain] : "Presale has ENDED"}
+              {data.hasEnded ? "Presale has ENDED" : contractMap[chain]}
             </div>
           </div>
           <div className="purple-ball absolute -top-[80px] -left-[30px] hidden lg:inline-block" />
